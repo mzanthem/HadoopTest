@@ -31,6 +31,13 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+/*
+ * test.txt
+ * Hello World
+ * Hello Java
+ * Hello Hadoop
+ *
+ */
 public class WordCount {
 
 	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
@@ -61,6 +68,13 @@ public class WordCount {
 		}
 	}
 
+	/**
+	 * 
+	 * @param args
+	 * 	hdfs://hadoop:9000/input/test.txt
+	 * 	hdfs://hadoop:9000/output/20170315/wordcount
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
