@@ -1,4 +1,4 @@
-package com.mazan;
+package com.mazan.mr;
 
 import java.io.IOException;
 
