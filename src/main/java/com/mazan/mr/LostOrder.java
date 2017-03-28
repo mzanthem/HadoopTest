@@ -7,7 +7,9 @@ package com.mazan.mr;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -40,10 +42,11 @@ public class LostOrder {
 	public static final Log logger = LogFactory.getLog(LostOrder.class);
 	
 	public static List<String> list;
-	
+	public static Set<String> set;
 	
 	static {
 		list = TxtReadUtil.getTxt("/tmp/110.csv");
+		set = new HashSet<>();
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -84,7 +87,7 @@ public class LostOrder {
 			String orderId = findLog(log, list);
 			//找到日志，写入
 			if(StringUtils.isNotEmpty(orderId)) {
-				
+				set.add(orderId);
 //				String reason = getReason(log);
 				context.write(new Text(orderId), new ObjectWritable(log));
 //				logger.info("find!!! orderId=" + orderId + "reason is " + log.substring(55));
@@ -107,13 +110,37 @@ public class LostOrder {
 		public void reduce(Text key, Iterable<ObjectWritable> values, Context context)
 				throws IOException, InterruptedException {
 			
+//			System.out.println("Set.size = " + set.size());
+			
 			ObjectWritable result = new ObjectWritable();
 			for (ObjectWritable val : values) {
 				result = val;
 			}
+			//判断List没找到的元素方法1：list.remove
+			
 			
 			context.write(key, result);
 		}
+
+		@Override
+		protected void cleanup(Reducer<Text, ObjectWritable, Text, ObjectWritable>.Context context)
+				throws IOException, InterruptedException {
+			
+			 while (context.nextKey()) {
+				 continue;
+			 }
+			//reduce完成后的操作
+			System.out.println("---------clean up--Set.size = " + set.size());
+			
+			List<String> remain = new ArrayList<>(list);
+			remain.removeAll(set);
+			System.out.println(remain.size());
+//			for(int i = 0; i< remain.size(); i++) {
+//				System.out.println("remain:" + remain.get(i));
+//			}
+		}
+		
+		
 	}
 	
 	/**
