@@ -27,6 +27,10 @@ import org.apache.hadoop.util.GenericOptionsParser;
  * 
  * @time: 下午5:53:04
  * @author mazan
+ * 理解错误....
+ * 应该是：
+ * E和F有共同朋友：A
+ * 而不是A和B是朋友，且有共同朋友
  */
 public class MutualFriend {
 	/*
@@ -95,9 +99,10 @@ public class MutualFriend {
 			String line = value.toString();
 			String[] friends = line.split(" ");
 			
-			
+			System.out.println("line :" + line);
 			List<String> list;
-			for (int i = 0; i < friends.length; i++) {
+			
+				int i = 0; //只能以第一个开头
 				
 				for (int j = i + 1; j < friends.length; j++) {
 					//每次均初始化list
@@ -115,10 +120,10 @@ public class MutualFriend {
 					set = new HashSet<>();
 					set.addAll(list);
 					
+					System.out.println("============[" + index + "," + set.toString() + "]");
 					//输出
 					context.write(new Text(index), new Text(set.toString()));
 				}
-			}
 			
 			
 		}
@@ -144,10 +149,10 @@ public class MutualFriend {
 			
 			int count = 0;
 			//同一个key比较，values交集
+			System.out.println("===========key:" + key);
 			for (Text value : values) {
 				String tmp = value.toString();
-				System.out.println("=================" + tmp);
-				
+				System.out.println("====value:" + tmp);
 				
 				result =  getSet(tmp);
 				
@@ -223,7 +228,12 @@ public class MutualFriend {
 		}
 		
 		String[] tmps = tmp.split(",");
-		return new HashSet<String>(Arrays.asList(tmps));
+		
+		Set<String> set = new HashSet<String>();
+		for (String str : tmps) {
+			set.add(str.trim());
+		}
+		return set;
 		
 	}
 	
