@@ -61,7 +61,7 @@ public class LostOrder {
 		Job job = Job.getInstance(conf, "lost order");
 		job.setJarByClass(LostOrder.class);
 		job.setMapperClass(LostOrderMapper.class);
-		job.setCombinerClass(LostOrderReducer.class);
+//		job.setCombinerClass(LostOrderReducer.class);
 		job.setReducerClass(LostOrderReducer.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(ObjectWritable.class);
@@ -95,6 +95,22 @@ public class LostOrder {
 			}
 			
 		}
+
+		@Override
+		protected void cleanup(Mapper<Object, Text, Text, ObjectWritable>.Context context)
+				throws IOException, InterruptedException {
+			// map clean up
+			
+			while(context.nextKeyValue()) {
+				continue;
+			}
+			
+			System.out.println("-----------------mapper clean up-----------------");
+			
+			
+		}
+		
+		
 		
 		
 	}
@@ -135,9 +151,9 @@ public class LostOrder {
 			List<String> remain = new ArrayList<>(list);
 			remain.removeAll(set);
 			System.out.println(remain.size());
-//			for(int i = 0; i< remain.size(); i++) {
-//				System.out.println("remain:" + remain.get(i));
-//			}
+			for(int i = 0; i< remain.size(); i++) {
+				System.out.println("-------------remain:" + remain.get(i));
+			}
 		}
 		
 		
