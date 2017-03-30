@@ -1,10 +1,12 @@
 package com.mazan.dfs;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
@@ -18,7 +20,7 @@ import org.apache.hadoop.fs.RemoteIterator;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HdfsUtil {
+public class HdfsTest {
 	
 	FileSystem fs = null;
 
@@ -33,13 +35,30 @@ public class HdfsUtil {
 		
 		//也可以在代码中对conf中的配置信息进行手动设置，会覆盖掉配置文件中的读取的值
 		conf.set("fs.defaultFS", uri);
-		conf.set("", "hdfs");
 		
 		//根据配置信息，去获取一个具体文件系统的客户端操作实例对象
-		fs = FileSystem.get(new URI(uri),conf,"hadoop");
+		fs = FileSystem.get(new URI(uri),conf,"hdfs");
 		
 	}
 	
+	/**
+	 * getFs
+	 * @return
+	 * @throws URISyntaxException 
+	 * @throws InterruptedException 
+	 * @throws IOException 
+	 */
+	public static FileSystem getFs() throws IOException, InterruptedException, URISyntaxException {
+		Configuration conf = new Configuration();
+		
+		//也可以在代码中对conf中的配置信息进行手动设置，会覆盖掉配置文件中的读取的值
+		conf.set("fs.defaultFS", uri);
+		
+		//根据配置信息，去获取一个具体文件系统的客户端操作实例对象
+		FileSystem fs = null;
+		fs = FileSystem.get(new URI(uri),conf,"user"); 
+		return fs;
+	}
 	
 	
 	/**
@@ -55,11 +74,11 @@ public class HdfsUtil {
 		
 		FileSystem fs = FileSystem.get(conf);
 		
-		Path dst = new Path(uri + "/input/20170328/test1.txt");
+		Path dst = new Path(uri + "/input/20170329/mutualFriend2.txt");
 		
 		FSDataOutputStream os = fs.create(dst);
 		
-		FileInputStream is = new FileInputStream("c:/test/test.txt");
+		FileInputStream is = new FileInputStream("c:/test/mf.txt");
 		
 		IOUtils.copy(is, os);
 		
@@ -78,6 +97,28 @@ public class HdfsUtil {
 		
 	}
 	
+	/**
+	 * 上传文件夹下的文件
+	 * @throws Exception
+	 */
+	@Test
+	public void uploadFolder() throws Exception {
+		String localFolder = "C:/test/20170330";
+		File folder = new File(localFolder);
+		
+		if (!folder.isDirectory()) {
+			System.exit(-1);
+		}
+		
+		for (File file : folder.listFiles()) {
+			String filename = file.getName();
+			System.out.println("fileName:" + filename);
+			fs.copyFromLocalFile(new Path(file.getPath()), new Path(uri + "/input/20170330/" + file.getName()));
+			
+		}
+		
+		
+	}
 	
 	/**
 	 * 下载文件
@@ -102,7 +143,7 @@ public class HdfsUtil {
 	public void listFiles() throws FileNotFoundException, IllegalArgumentException, IOException {
 
 		// listFiles列出的是文件信息，而且提供递归遍历
-		RemoteIterator<LocatedFileStatus> files = fs.listFiles(new Path("/"), true);
+		RemoteIterator<LocatedFileStatus> files = fs.listFiles(new Path("/input"), true);
 		
 		while(files.hasNext()){
 			
@@ -159,13 +200,11 @@ public class HdfsUtil {
 		
 		FileSystem fs = FileSystem.get(conf);
 		
-		FSDataInputStream is = fs.open(new Path("/input.txt"));
+		FSDataInputStream is = fs.open(new Path("/input/test.txt"));
 		
 		FileOutputStream os = new FileOutputStream("c:/test/input.csv");
 		
 		IOUtils.copy(is, os);
 	}
-	
-	
 	
 }

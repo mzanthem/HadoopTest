@@ -19,13 +19,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.Reducer.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-import com.mazan.mr.MutualFriend.MutualFriendMapper;
-import com.mazan.mr.MutualFriend.MutualFriendReducer;
+import com.mazan.util.HDFSUtil;
 
 /**
  * FindFriend
@@ -66,7 +64,10 @@ public class FindFriend {
 			System.exit(2);
 		}
 
-		Job job = Job.getInstance(conf, "mutual friend");
+		//输出文件夹存在--删除
+		HDFSUtil.delete(otherArgs[otherArgs.length - 1]);
+		
+		Job job = Job.getInstance(conf, "find friend");
 		job.setJarByClass(FindFriend.class);
 		job.setMapperClass(FindFriendMapper.class);
 		job.setReducerClass(FindFriendReducer.class);

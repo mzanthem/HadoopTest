@@ -25,6 +25,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import com.mazan.util.HDFSUtil;
 import com.mazan.util.TxtReadUtil;
 
 /**
@@ -45,7 +46,7 @@ public class LostOrder {
 	public static Set<String> set;
 	
 	static {
-		list = TxtReadUtil.getTxt("/tmp/110.csv");
+		list = TxtReadUtil.getTxt("/tmp/37.csv");
 		set = new HashSet<>();
 	}
 	
@@ -58,6 +59,10 @@ public class LostOrder {
 			System.err.println("Usage: wordcount <in> [<in>...] <out>");
 			System.exit(2);
 		}
+		
+		//输出文件夹存在--删除
+		HDFSUtil.delete(otherArgs[otherArgs.length - 1]);
+		
 		Job job = Job.getInstance(conf, "lost order");
 		job.setJarByClass(LostOrder.class);
 		job.setMapperClass(LostOrderMapper.class);
@@ -191,12 +196,6 @@ public class LostOrder {
 		
 	}
 	
-	private static String getReason(String log, String key) {
-		if (log.indexOf(key) != -1) {
-			return key;
-		}
-		return null;
-	}
 	
 }
 

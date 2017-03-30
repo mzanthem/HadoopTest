@@ -28,6 +28,7 @@ import org.apache.hadoop.util.GenericOptionsParser;
  * @time: 下午5:53:04
  * @author mazan
  * 理解错误....
+ * 理解为了 A和B 是朋友,且有共同朋友，这样的话 E&F 就不是朋友，也就不会有{E&F:[A]}
  * 应该是：
  * E和F有共同朋友：A
  * 而不是A和B是朋友，且有共同朋友
