@@ -31,6 +31,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
+import com.mazan.util.HDFSUtil;
+
 /*
  * test.txt
  * Hello World
@@ -85,6 +87,10 @@ public class WordCount {
 			System.err.println("Usage: wordcount <in> [<in>...] <out>");
 			System.exit(2);
 		}
+		
+		//输出文件夹存在--删除
+		HDFSUtil.delete(otherArgs[otherArgs.length - 1]);
+		
 //		Job job = new Job(conf, "word count");
 		Job job = Job.getInstance(conf, "word count");
 		job.setJarByClass(WordCount.class);

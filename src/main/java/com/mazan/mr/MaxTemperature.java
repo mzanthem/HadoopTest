@@ -12,6 +12,8 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import com.mazan.util.HDFSUtil;
+
 /*
  * sample.txt
  * 123456798676231190101234567986762311901012345679867623119010123456798676231190101234561+00121534567890356
@@ -80,6 +82,9 @@ public class MaxTemperature {
 			System.exit(-1);
 		}
 		
+		//输出文件夹存在--删除
+		HDFSUtil.delete(args[1]);
+				
 		Job job = Job.getInstance();
 		job.setJarByClass(MaxTemperature.class);
 		job.setJobName("Max temperature");
