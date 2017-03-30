@@ -25,7 +25,7 @@ public class HDFSUtil {
 	 * defaultURI
 	 */
 	public static final String uri = "hdfs://heimdall01.test.hadoop.com:8020/";
-
+//	public static String uri = "hdfs://hadoop:9000/";
 	/**
 	 * 获得默认FileSystem
 	 * 

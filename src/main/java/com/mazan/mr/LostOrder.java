@@ -46,7 +46,7 @@ public class LostOrder {
 	public static Set<String> set;
 	
 	static {
-		list = TxtReadUtil.getTxt("/tmp/37.csv");
+		list = TxtReadUtil.getTxt("/tmp/35.csv");
 		set = new HashSet<>();
 	}
 	

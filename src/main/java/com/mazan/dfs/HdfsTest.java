@@ -37,7 +37,7 @@ public class HdfsTest {
 		conf.set("fs.defaultFS", uri);
 		
 		//根据配置信息，去获取一个具体文件系统的客户端操作实例对象
-		fs = FileSystem.get(new URI(uri),conf,"hdfs");
+		fs = FileSystem.get(new URI(uri),conf,"user");
 		
 	}
 	
