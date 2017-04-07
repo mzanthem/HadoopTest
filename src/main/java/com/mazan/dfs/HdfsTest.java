@@ -93,7 +93,7 @@ public class HdfsTest {
 	@Test
 	public void upload2() throws Exception, IOException{
 		
-		fs.copyFromLocalFile(new Path("c:/test/test.txt"), new Path(uri + "/input/20170328/test2.txt"));
+		fs.copyFromLocalFile(new Path("c:/test/user.txt"), new Path(uri + "/input/user.txt"));
 		
 	}
 	

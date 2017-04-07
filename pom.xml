@@ -43,8 +43,12 @@
 			<version>2.6.0</version>
 		</dependency>
 
-
-
+		
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch-hadoop-mr</artifactId>
+			<version>5.0.0-alpha4</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 		<dependency>
 			<groupId>com.google.guava</groupId>
